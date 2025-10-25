@@ -47,14 +47,14 @@ Open `frontend/index.html` in your browser.
 
 ## Live Links
 
-**Backend:** [https://basibits-backend.onrender.com](https://basibits-backend.onrender.com)
-**Frontend:** [https://basibits.netlify.app](https://basibits.netlify.app)
+**Backend:** 
+**Frontend:** 
 
 ---
 
 ## Author
 
 **Basirat Kareem**
-Software QA Engineer
+
 [LinkedIn](https://www.linkedin.com/in/basiratkareem)
 [GitHub](https://github.com/basiratkareem)
