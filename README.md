@@ -2,7 +2,7 @@
 **BasiBits** is a fun, beginner-friendly Web3 dApp built on the **Hedera Hashgraph Network**.  
 It helps users learn and interact with blockchain technology by sending and receiving simple digital tokens.
 
-#[GET STARTED](https://basiratkareem.github.io/BasiBits/frontend/index.html)
+[**GET STARTED**](https://basiratkareem.github.io/BasiBits/frontend/index.html)
 
 ---
 
