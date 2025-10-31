@@ -1,6 +1,9 @@
-# BasiBits — Web3 Checkout (Hedera Testnet)
+# BasiBits — Payment App (Hedera Testnet)
 Simple checkout dApp built with HTML/CSS/JS (frontend) and Node.js + Hedera
 SDK (backend).
+
+# App Link
+ [__VIEW APP__]([URL](https://basiratkareem.github.io/BasiBits/public/index.html)) 
 
 ## Features
 - Create a simple checkout invoice (client calls backend)
