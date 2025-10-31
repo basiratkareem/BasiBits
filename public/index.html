@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BasiBits Payment App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 360px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    #result {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>BasiBits Payment (Testnet)</h2>
+    <input id="merchant" placeholder="Merchant Account ID (0.0.xxx)" />
+    <input id="amount" type="number" placeholder="Amount in HBAR" step="0.001" />
+    <button id="createAndPayBtn">Create & Pay Invoice</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const resultDiv = document.getElementById('result');
+    const createAndPayBtn = document.getElementById('createAndPayBtn');
+
+    createAndPayBtn.addEventListener('click', async () => {
+      const merchant = document.getElementById('merchant').value.trim();
+      const amount = document.getElementById('amount').value.trim();
+
+      if (!merchant || !amount) {
+        resultDiv.innerText = '❌ Please enter both merchant ID and amount';
+        return;
+      }
+
+      try {
+        // 1️⃣ Create invoice
+        resultDiv.innerText = '⏳ Creating invoice...';
+        const createResp = await fetch('/api/create-invoice', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ merchantId: merchant, amount })
+        });
+
+        const invoiceData = await createResp.json();
+        if (invoiceData.error) {
+          resultDiv.innerText = `❌ ${invoiceData.error}`;
+          return;
+        }
+
+        const invoiceId = invoiceData.invoiceId;
+        resultDiv.innerText = `✅ Invoice created! ID: ${invoiceId}\n⏳ Paying invoice...`;
+
+        // 2️⃣ Automatically pay the invoice
+        const payResp = await fetch(`/api/pay-invoice/${invoiceId}`, { method: 'POST' });
+        const payData = await payResp.json();
+
+        if (payData.error) {
+          resultDiv.innerText = `❌ Payment failed: ${payData.error}`;
+          return;
+        }
+
+        resultDiv.innerHTML = `
+          💰 Invoice Paid!<br>
+          Transaction ID: ${payData.txId}<br>
+          Status: ${payData.status}<br>
+          <a href="${payData.hashscanUrl}" target="_blank">View on Hashscan</a>
+        `;
+      } catch (err) {
+        console.error(err);
+        resultDiv.innerText = '❌ Error creating or paying invoice';
+      }
+    });
+  </script>
+</body>
+</html>
